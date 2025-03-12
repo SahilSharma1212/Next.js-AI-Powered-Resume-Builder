@@ -1,0 +1,54 @@
+import React from 'react'
+import PdfPreview from '../_components/PdfPreview'
+
+export default function PreviewScreen({
+  confirmGeneration,
+  setConfirmGeneration,
+  name,
+  phonenumber,
+  email,
+  yourlocation,
+  achievements,
+  description,
+  allQualifications,
+  allSkills,
+  allrole,
+  allprojects,
+  softskills,
+  socials
+}: {
+  confirmGeneration: boolean;
+  setConfirmGeneration: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  phonenumber: string;
+  email: string;
+  yourlocation: string;
+  achievements: string;
+  description: string;
+  allQualifications: string[];
+  allSkills: string[];
+  allrole: string[];
+  allprojects: Array<{ projectname: string; projectdescription: string }>;
+  softskills:string[];
+  socials: { socialName: string; socialLink: string }[];
+}) {
+  return (
+    <div className="text-3xl text-red-400 font-bold lg:w-[100rem] sm:w-[50rem] h-full bg-white m-5 rounded-xl border border-gray-500 bg-white/5 p-3 ">
+      <PdfPreview confirmGeneration={confirmGeneration}
+          setConfirmGeneration={setConfirmGeneration}
+          name={name}
+          phonenumber={phonenumber}
+          email={email}
+          yourlocation={yourlocation}
+          achievements={achievements}
+          description={description}
+          allQualifications={allQualifications}
+          allSkills={allSkills}
+          allrole={allrole}
+          softskills={softskills}
+          allprojects={allprojects}
+          socials={socials}
+          />
+    </div>
+  )
+}
