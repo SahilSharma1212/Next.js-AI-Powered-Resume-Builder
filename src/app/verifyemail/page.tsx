@@ -1,7 +1,4 @@
 "use client";
-
-import { motion } from "framer-motion";
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Ban, Check } from "lucide-react";
@@ -9,29 +6,7 @@ import { Spotlight } from "@/components/ui/spotlight-new";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-
-
-export function LoadingDots() {
-    return (
-      <div className="flex justify-center items-center space-x-2">
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            className="w-2 h-2 bg-white rounded-full"
-            animate={{
-              y: [0, -6, 0], // Moves up, then back down
-            }}
-            transition={{
-              duration: 0.6,
-              repeat: Infinity,
-              repeatDelay: 0.2,
-              delay: i * 0.2, // Each dot starts at a different time
-            }}
-          />
-        ))}
-      </div>
-    );
-  }
+import { LoadingDots } from "@/components/LoadingDotsComponent";
   
 
 export default function VerifyEmailPage() {
