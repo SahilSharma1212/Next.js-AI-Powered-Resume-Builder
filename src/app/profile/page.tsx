@@ -6,57 +6,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-
-export function SubtleDarkBluePreview({ oneTemplate }: { oneTemplate: Template }) {
-  return (
-    <div className="h-full w-full flex">
-      {/* Left Blue Section with Vertical Text */}
-      <div className="w-[30%] flex bg-blue-950 flex-col items-center justify-center">
-        <p
-          className="text-white text-xl tracking-wider"
-          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-        >
-          {oneTemplate.role}
-        </p>
-      </div>
-
-      {/* Name Section */}
-      <div className="w-[70%] p-4">
-        <span className="text-lg">
-          {oneTemplate.name.first} {oneTemplate.name.last}
-        </span>
-        <br />
-        <span className="text-sm">({oneTemplate.phone})</span>
-      </div>
-    </div>
-  );
-}
-
-export function OrangeAndBeigePreview({ oneTemplate }: { oneTemplate: Template }) {
-  return (
-    <div className="h-full w-full flex">
-      <div className="w-[30%] flex bg-[#fcf8e1] flex-col">
-        <div className="h-[40%] bg-red-400"></div>
-      </div>
-      <div className="p-4 text-lg">
-        {oneTemplate.name.first} {oneTemplate.name.last}
-      </div>
-    </div>
-  );
-}
-
-export function BasicMonochromePreview({ oneTemplate }: { oneTemplate: Template }) {
-  return (
-    <div className="h-full w-full flex flex-col">
-      <div className="h-[20%] bg-[#141414] flex items-center text-white justify-center">
-        <span className="text-lg">{oneTemplate.role}</span>
-      </div>
-      <div className="h-[80%] flex justify-center items-start pt-3">
-        {oneTemplate.name.first} {oneTemplate.name.last}
-      </div>
-    </div>
-  );
-}
+import { BasicMonochromePreview ,SubtleDarkBluePreview,OrangeAndBeigePreview} from "@/components/resume-previews";
 
 export interface Template {
   _id: string;
