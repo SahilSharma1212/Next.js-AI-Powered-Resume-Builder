@@ -162,3 +162,4 @@ const SpotlightNewDemo: FC = () => {
 };
 
 export default SpotlightNewDemo;
+export const dynamic = "force-dynamic";
