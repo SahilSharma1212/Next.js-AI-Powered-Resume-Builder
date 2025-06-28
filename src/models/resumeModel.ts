@@ -130,6 +130,7 @@ const ResumeSchema = new mongoose.Schema(
     },
     templatename:{
       type:String,
+      required:true,
     }
   },
 );

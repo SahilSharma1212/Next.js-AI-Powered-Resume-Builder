@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 export default function FormComponent({
-  confirmGeneration,
+  // confirmGeneration,
   setConfirmGeneration,
   confirmingGeneration,
   setConfirmingGeneration,
@@ -132,12 +132,12 @@ export default function FormComponent({
   
   useEffect(() => {
     console.log("Updated Skills:");
-    if (allSkills?.length) {
-      console.log("  Skills List:", allSkills.join(", "));
+    if (allSkils?.length) {
+      console.log("  Skills List:", allSkils.join(", "));
     } else {
       console.log("  No skills found.");
     }
-  }, [allSkills]);
+  }, [allSkils]);
   
   useEffect(() => {
     console.log("Updated Work Experience:");

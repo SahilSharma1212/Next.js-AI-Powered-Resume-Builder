@@ -9,14 +9,12 @@ import React from "react";
 export default function TellUsMorePage({
   description,
   setDescription,
-  confirmGeneration,
   setConfirmGeneration,
   confirmingGeneration,
   setConfirmingGeneration,
   previewIsOn,
   setPreviewIsOn,
   resumeHasOnceBeenGenerated,
-  setResumeHasOnceBeenGenerated
 }: {
   confirmGeneration: boolean;
   setConfirmGeneration: React.Dispatch<React.SetStateAction<boolean>>;

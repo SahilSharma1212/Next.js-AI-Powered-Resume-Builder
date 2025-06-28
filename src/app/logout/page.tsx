@@ -1,12 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Mail,
   Phone,
@@ -10,19 +10,74 @@ import {
   Github,
   Earth,
   Globe,
-  Timer,
 } from "lucide-react";
 
-export default function ProfessionalResume({ response = {} }) {
+// Define interfaces for data structures
+interface Name {
+  first: string;
+  last: string;
+}
 
-    const socialIcons: Record<string, JSX.Element> = {
-      facebook: <Facebook size={17} />,
-      instagram: <Instagram size={17} />,
-      linkedin: <Linkedin size={17} />,
-      twitter: <Twitter size={17} />,
-      github: <Github size={17} />,
-      website: <Earth size={17} />,
-    };
+interface Social {
+  socialName: string;
+  socialLink: string;
+}
+
+interface Qualification {
+  degreename: string;
+  course: string;
+  institution: string;
+  yearofcompletion: string;
+}
+
+interface Skill {
+  skillname: string;
+  skilllevel: string;
+}
+
+interface Project {
+  projectname: string;
+  projectdescription: string;
+}
+
+interface Role {
+  jobtitle: string;
+  companyname: string;
+  duration: string;
+}
+
+interface ResumeResponse {
+  name: Name;
+  email: string;
+  phone: string;
+  yourLocation: string;
+  socials: Social[];
+  workExperience: Role[];
+  educationalDetails: Qualification[];
+  allSkills: Skill[];
+  allProjects: Project[];
+  softskills: { softskillname: string }[];
+  description: string;
+  role: string;
+}
+
+// Define props interface
+interface ProfessionalResumeProps {
+  response?: ResumeResponse;
+}
+
+// Define social icons type
+type SocialIconName = "facebook" | "instagram" | "linkedin" | "twitter" | "github" | "website";
+
+const ProfessionalResume: FC<ProfessionalResumeProps> = ({ response = {} as ResumeResponse }) => {
+  const socialIcons: Record<SocialIconName, React.ReactNode> = {
+    facebook: <Facebook size={17} />,
+    instagram: <Instagram size={17} />,
+    linkedin: <Linkedin size={17} />,
+    twitter: <Twitter size={17} />,
+    github: <Github size={17} />,
+    website: <Earth size={17} />,
+  };
 
   return (
     <div className="w-full min-h-[297mm] mx-auto h-full bg-white border shadow-lg flex flex-col font-sans">
@@ -37,16 +92,14 @@ export default function ProfessionalResume({ response = {} }) {
       </div>
 
       <div className="flex">
-
         {/* Left Sidebar */}
         <div className="w-1/3 bg-gray-100 p-6 font-semibold text-base flex flex-col">
-        
           {/* Contact Section */}
           <div>
             <h2 className="text-xl font-bold text-gray-700">CONTACT</h2>
             <hr className="my-2 border-gray-300" />
             <p className="flex items-center gap-2 text-gray-700">
-              <Mail size={17} />{" "}
+              <Mail size={17} />
               <span className="text-xs py-1">
                 {response.email || "your@email.com"}
               </span>
@@ -57,18 +110,16 @@ export default function ProfessionalResume({ response = {} }) {
             <p className="flex items-center gap-2 text-gray-700">
               <MapPin size={17} /> {response.yourLocation || "City, Country"}
             </p>
-            {response.socials?.map((social: any, index: number) => (
-                        <p key={index} className="text-gray-700  flex items-center gap-2">
-                          {socialIcons[social.socialName.toLowerCase()] || (
-                            <Globe size={17} className="text-gray-500" />
-                          )}
-                          <span
-                            className=" flex gap-1 items-center text-base"
-                          >
-                            {social.socialName}
-                          </span>
-                        </p>
-                      ))}
+            {response.socials?.map((social, index) => (
+              <p key={index} className="text-gray-700 flex items-center gap-2">
+                {socialIcons[social.socialName.toLowerCase() as SocialIconName] || (
+                  <Globe size={17} className="text-gray-500" />
+                )}
+                <span className="flex gap-1 items-center text-base">
+                  {social.socialName}
+                </span>
+              </p>
+            ))}
           </div>
 
           {/* Education Section */}
@@ -90,6 +141,7 @@ export default function ProfessionalResume({ response = {} }) {
               </div>
             ))}
           </div>
+
           {/* Skills Section */}
           <div>
             <h2 className="mt-6 text-lg font-bold text-gray-700">SKILLS</h2>
@@ -104,15 +156,16 @@ export default function ProfessionalResume({ response = {} }) {
 
         {/* Right Main Content */}
         <div className="w-2/3 p-6 flex-1">
-          {/* introduction */}
+          {/* Introduction */}
           <div className="text-sm">
-            <h2 className="text-xl font-bold text-gray-800">Hi It's me </h2>
+            <h2 className="text-xl font-bold text-gray-800">Hi It&apos;s me</h2>
             <hr className="my-2 border-gray-300" />
             <p className="text-gray-600 text-sm font-medium">
-              {response.description}
+              {response.description || "No description provided."}
             </p>
           </div>
-          {/* work Experience */}
+
+          {/* Work Experience */}
           <div className="text-sm mt-6">
             <h2 className="text-xl font-bold text-gray-800">WORK EXPERIENCE</h2>
             <hr className="my-1 border-gray-300" />
@@ -126,24 +179,24 @@ export default function ProfessionalResume({ response = {} }) {
                     {job.jobtitle || "Job Title"}
                   </p>
                   <p className="text-gray-600 text-sm font-medium">
-                    {job.companyname || "Company"} ({job.duration || "Duration"}
-                    )
+                    {job.companyname || "Company"} ({job.duration || "Duration"})
                   </p>
                 </div>
               ))}
             </div>
           </div>
-          {/* projects */}
+
+          {/* Projects */}
           <div className="text-sm mt-6">
             <h2 className="text-xl font-bold text-gray-800">Projects</h2>
             <hr className="my-2 border-gray-300" />
-            {response.allProjects?.map((proj: any, index: number) => (
+            {(response.allProjects || []).map((proj, index) => (
               <div key={index} contentEditable className="mt-2">
                 <p className="font-medium text-gray-800 text-base">
-                  {proj.projectname}:
+                  {proj.projectname || "Project Name"}:
                 </p>
                 <p className="font-medium text-gray-600 text-sm">
-                  {proj.projectdescription}
+                  {proj.projectdescription || "No description provided."}
                 </p>
               </div>
             ))}
@@ -152,4 +205,6 @@ export default function ProfessionalResume({ response = {} }) {
       </div>
     </div>
   );
-}
+};
+
+export default ProfessionalResume;

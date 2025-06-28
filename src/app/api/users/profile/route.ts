@@ -3,6 +3,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 import User from "@/models/userModel";
 import Resume from "@/models/resumeModel";
+import { ResumeSchema } from "@/schemas/resumeSchema";
 
 connect();
 
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
             console.error("Error finding resumes:", error);
         }
 
-        let resumeTemplateArray = []
+        const resumeTemplateArray:Array<ResumeSchema> = []
 
         resumes?.forEach(resume => {
             resumeTemplateArray.push(resume)
@@ -52,7 +53,8 @@ export async function GET(request: NextRequest) {
             templates: resumeTemplateArray || null, // ✅ Ensure `templates` is safe to access
         });
 
-    } catch (error:any) {
-        return NextResponse.json({ error: "Error receiving token data: " + error.toString() }, { status: 400 });
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({ error: "Error receiving token data: " }, { status: 400 });
     }
 }

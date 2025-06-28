@@ -13,7 +13,59 @@ import {
   Timer,
 } from "lucide-react";
 
-export default function SubtleDarkBlue({ response }: { response: any }) {
+
+// Define interfaces for data structures
+interface Name {
+  first: string;
+  last: string;
+}
+
+interface Social {
+  socialName: string;
+  socialLink: string;
+}
+
+interface Qualification {
+  degreename: string;
+  course: string;
+  institution: string;
+  yearofcompletion: string;
+}
+
+interface Skill {
+  skillname: string;
+  skilllevel: string;
+}
+
+interface Project {
+  projectname: string;
+  projectdescription: string;
+}
+
+interface Role {
+  jobtitle: string;
+  companyname: string;
+  duration: string;
+}
+
+interface ResumeResponse {
+  name: Name;
+  email: string;
+  phone: string;
+  yourLocation: string;
+  socials: Social[];
+  workExperience: Role[];
+  educationalDetails: Qualification[];
+  allSkills: Skill[];
+  allProjects: Project[];
+  softskills: { softskillname: string }[];
+  description: string;
+  role: string;
+}
+
+
+
+export default function SubtleDarkBlue({ response = {} as ResumeResponse }) {
   const socialIcons: Record<string, JSX.Element> = {
     facebook: <Facebook size={17} />,
     instagram: <Instagram size={17} />,
@@ -47,7 +99,7 @@ export default function SubtleDarkBlue({ response }: { response: any }) {
             <Phone size={17} />{" "}
             <span className="text-base font-thin">{response.phone}</span>
           </p>
-          {response.socials?.map((social: any, index: number) => (
+          {response.socials?.map((social, index: number) => (
             <p key={index} className="flex items-center gap-2">
               {socialIcons[social.socialName.toLowerCase()] || (
                 <Globe size={17} className="text-gray-500" />
@@ -67,7 +119,7 @@ export default function SubtleDarkBlue({ response }: { response: any }) {
         <div className="mt-4">
           <h2 className="text-lg font-thin">Education</h2>
           <hr className="mt-2 mr-4 text-slate-600" />
-          {response.educationalDetails?.map((edu: any, index: number) => (
+          {response.educationalDetails?.map((edu, index: number) => (
             <div key={index} className="mt-4" contentEditable>
               <p className="text-lg font-thin my-2 ">{edu.degreename}</p>
               <p className="text-sm font-thin my-2 ">in {edu.course}</p>
@@ -84,7 +136,7 @@ export default function SubtleDarkBlue({ response }: { response: any }) {
         <div className="mt-4">
           <h2 className="text-lg font-thin">Skills</h2>
           <hr className="mt-2 mr-4 text-slate-600" />
-          {response.allSkills?.map((skill: any, index: number) => (
+          {response.allSkills?.map((skill, index: number) => (
             <li key={index} className="my-2 font-thin text-sm" contentEditable>
               {skill.skillname} - {skill.skilllevel}
             </li>
@@ -99,7 +151,7 @@ export default function SubtleDarkBlue({ response }: { response: any }) {
         </div>
         <div className="mt-3">
           <h2 className="text-2xl font-thin text-gray-600">Work Experience</h2>
-          {response.workExperience?.map((job: any, index: number) => (
+          {response.workExperience?.map((job, index: number) => (
             <div key={index} contentEditable>
               <p className="text-lg font-thin mt-2">{job.jobtitle}:</p>
               <p className="text-gray-600 font-thin text-base">
@@ -110,7 +162,7 @@ export default function SubtleDarkBlue({ response }: { response: any }) {
         </div>
         <div className="mt-6">
           <h2 className="text-2xl font-thin text-gray-600">Projects</h2>
-          {response.allProjects?.map((proj: any, index: number) => (
+          {response.allProjects?.map((proj, index: number) => (
             <div key={index} contentEditable className="mt-2">
               <p className="font-medium text-gray-600 text-base">
                 {proj.projectname}:

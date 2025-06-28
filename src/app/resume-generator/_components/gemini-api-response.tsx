@@ -1,13 +1,273 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { Skeleton } from "@/components/ui/skeleton";
+// import { toast } from "@/hooks/use-toast";
+// import OrangeAndBeige from "@/components/orangeAndBeige";
+// import SubtleDarkBlue from "@/components/SubtleDarkBlue";
+// import { useSearchParams } from "next/navigation";
+// import BasicMonochrome from "@/components/basicColored";
+
+// export default function GeminiResponse({
+//   confirmGeneration,
+//   setConfirmGeneration,
+//   name,
+//   phonenumber,
+//   email,
+//   yourlocation,
+//   description,
+//   allQualifications = [],
+//   allSkills = [],
+//   allrole = [],
+//   allprojects = [],
+//   softskills = [],
+//   socials = [],
+//   setGeneratedResume, // ✅ New prop for updating state
+// }:{
+//   confirmGeneration:boolean,
+//   name:{first:string,last:string},
+//   phonenumber:string,
+//   email:string,
+//   yourlocation:string,
+//   description:string;
+//   allQualifications: {
+//     degreename:string;
+//     course:string;
+//     institution:string;
+//     yearofcompletion:string;
+//   }[],allSkills: {
+//     skillname:string;
+//     skilllevel:string;
+//   }[];
+//   allprojects: {
+//     projectname:string;
+//     projectdescription:string;
+//   }[];
+//   softskills: {
+//     softskillname:string;
+//   }[];socials: {
+//     socialName:string;
+//     socialLink:string;
+//   }[];
+// }) {
+//   const searchParams = useSearchParams();
+//   const template = searchParams.get("template");
+
+//   // Mapping template names to components
+//   const templatesMap: Record<string, React.FC<{ response: any }>> = {
+//     OrangeAndBeige: OrangeAndBeige,
+//     SubtleDarkBlue: SubtleDarkBlue,
+//     BasicMonochrome: BasicMonochrome,
+//   };
+
+//   const SelectedTemplate = templatesMap[template as string] || OrangeAndBeige; // Default to OrangeAndBeige if not found
+
+//   const [response, setResponse] = useState<unknown>(null);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+
+//   const prompt = `Generate a professional, ATS-friendly resume in the following JSON format. 
+//         **Return only the JSON output, no extra words or characters**.
+    
+//         Name: ${name}
+        
+//         if there is a single word as name then set the first: as the name and second as an empty string , and also segregate names into first and last if someone has 3 names or more than 2 names in their name
+
+//         Phone: ${phonenumber}
+//         Email: ${email}
+//         Location: ${yourlocation}
+//         Description: ${description}
+//         (the description should be atleast 30 words long describing myself about what i do based on the information given)
+        
+//         Socials:
+//         ${socials.map((s) => `- ${s.socialName} : ${s.socialLink}`).join("\n")}
+    
+//         Projects:
+//         ${allprojects
+//           .map((ap) => `- ${ap.projectname}: ${ap.projectdescription}`)
+//           .join("\n")}
+//           (also enlarge project description atleast 30 words which explains the details that i have not mentioned in detail or left it out)
+    
+//         Skills:
+//         ${allSkills
+//           .map((skill) => `- ${skill.skillname} (${skill.skilllevel})`)
+//           .join("\n")}
+
+    
+//         Soft Skills:
+//         ${softskills.map((skill) => `- ${skill.softskillname}`).join("\n")}
+    
+//         Qualifications:
+//         ${allQualifications
+//           .map(
+//             (q) =>
+//               `- ${q.degreename} in ${q.course} from ${q.institution} (${q.yearofcompletion})`
+//           )
+//           .join("\n")}
+//           (identify and return the fullform of degree name example for btech return Bachelor in Technology and respectively)
+    
+//         Work Experience:
+//         ${allrole
+//           .map(
+//             (role) =>
+//               `- ${role.jobtitle} at ${role.companyname} for ${role.duration}`
+//           )
+//           .join("\n")}
+
+//         also on the basis of the details , predict what role the im applying for and include it in response
+    
+//         Expected JSON output:
+//         {
+//           "name": { "first": "", "last": "" },
+//           "email": "",
+//           "phone": "",
+//           "yourLocation": "",
+//           "socials":[{"socialName":"","socialLink:""}]
+//           "workExperience": [{ "companyname": "", "duration": "", "jobtitle": "" }],
+//           "educationalDetails": [{ "degreename": "","course": "", "institution": "", "yearofcompletion": "" }],
+//           "allSkills": [{ "skillname": "", "skilllevel": "" }],
+//           "allProjects": [{ "projectname": "", "projectdescription": "" }],
+//           "softskills": [{ "softskillname": "" }],
+//           "description": "",
+//           "role":""
+//         }`;
+
+//   useEffect(() => {
+//     if (!confirmGeneration) return;
+
+//     async function fetchData() {
+//       setLoading(true);
+//       setError(null);
+//       setResponse(null);
+
+//       try {
+//         const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+//         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+//         const result = await model.generateContent(prompt);
+//         const rawText = result.response?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+
+//         const jsonResponse = JSON.parse(rawText.replace(/```json|```/g, "").trim());
+//         setResponse(jsonResponse);
+//         console.log(jsonResponse);
+//         setGeneratedResume(jsonResponse);
+        
+//       } catch (err) {
+//         setError("Failed to fetch resume. Please try again.");
+//         toast({ variant: "destructive", title: "Error generating resume.", description: String(err) });
+//       } finally {
+//         setLoading(false);
+//         setConfirmGeneration(false);
+//       }
+//     }
+
+//     fetchData();
+//   }, [confirmGeneration]);
+
+//   return (
+//     <div className="w-full bg-slate-200 flex justify-center items-center min-h-[297mm] rounded-3xl">
+//       {loading ? (
+//         <Skeleton className="w-full h-10 rounded-md" />
+//       ) : error ? (
+//         <p className="text-black">{error}</p>
+//       ) : response ? (
+//         <SelectedTemplate response={response} />
+//       ) : null}
+//     </div>
+//   );
+// }
+
+
+
+
+
+import React, { useState, useEffect, FC } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/hooks/use-toast";
 import OrangeAndBeige from "@/components/orangeAndBeige";
 import SubtleDarkBlue from "@/components/SubtleDarkBlue";
-import { useSearchParams } from "next/navigation";
 import BasicMonochrome from "@/components/basicColored";
+import { useSearchParams } from "next/navigation";
 
-export default function GeminiResponse({
+// Define interfaces for all data structures
+
+
+interface Social {
+  socialName: string;
+  socialLink: string;
+}
+
+interface Qualification {
+  degreename: string;
+  course: string;
+  institution: string;
+  yearofcompletion: string;
+}
+
+interface Skill {
+  skillname: string;
+  skilllevel: string;
+}
+
+interface Project {
+  projectname: string;
+  projectdescription: string;
+}
+
+interface SoftSkill {
+  softskillname: string;
+}
+
+interface Role {
+  jobtitle: string;
+  companyname: string;
+  duration: string;
+}
+
+interface ResumeResponse {
+  name: string;
+  email: string;
+  phone: string;
+  yourLocation: string;
+  socials: Social[];
+  workExperience: Role[];
+  educationalDetails: Qualification[];
+  allSkills: Skill[];
+  allProjects: Project[];
+  softskills: SoftSkill[];
+  description: string;
+  role: string;
+}
+
+// Define props interface
+interface GeminiResponseProps {
+  confirmGeneration: boolean;
+  setConfirmGeneration: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  phonenumber: string;
+  email: string;
+  yourlocation: string;
+  description: string;
+  allQualifications?: Qualification[];
+  allSkills?: Skill[];
+  allrole?: Role[];
+  allprojects?: Project[];
+  softskills?: SoftSkill[];
+  socials?: Social[];
+  setGeneratedResume: React.Dispatch<React.SetStateAction<ResumeResponse | null>>;
+}
+
+// Define template component type
+type TemplateComponent = FC<{ response: ResumeResponse }>;
+
+// Template mapping with type safety
+const templatesMap: Record<string, TemplateComponent> = {
+  OrangeAndBeige,
+  SubtleDarkBlue,
+  BasicMonochrome,
+};
+
+const GeminiResponse: FC<GeminiResponseProps> = ({
   confirmGeneration,
   setConfirmGeneration,
   name,
@@ -21,28 +281,20 @@ export default function GeminiResponse({
   allprojects = [],
   softskills = [],
   socials = [],
-  setGeneratedResume, // ✅ New prop for updating state
-}) {
+  setGeneratedResume,
+}) => {
   const searchParams = useSearchParams();
-  const template = searchParams.get("template");
+  const template = searchParams.get("template") ?? "OrangeAndBeige";
+  const SelectedTemplate = templatesMap[template] ?? OrangeAndBeige;
 
-  // Mapping template names to components
-  const templatesMap: Record<string, React.FC<{ response: any }>> = {
-    OrangeAndBeige: OrangeAndBeige,
-    SubtleDarkBlue: SubtleDarkBlue,
-    BasicMonochrome: BasicMonochrome,
-  };
-
-  const SelectedTemplate = templatesMap[template as string] || OrangeAndBeige; // Default to OrangeAndBeige if not found
-
-  const [response, setResponse] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<ResumeResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const prompt = `Generate a professional, ATS-friendly resume in the following JSON format. 
         **Return only the JSON output, no extra words or characters**.
     
-        Name: ${name}
+        Name: ${JSON.stringify(name)}
         
         if there is a single word as name then set the first: as the name and second as an empty string , and also segregate names into first and last if someone has 3 names or more than 2 names in their name
 
@@ -50,7 +302,7 @@ export default function GeminiResponse({
         Email: ${email}
         Location: ${yourlocation}
         Description: ${description}
-        (the description should be atleast 30 words long describing myself about what i do based on the information given)
+        (the description should be at least 30 words long describing myself about what I do based on the information given)
         
         Socials:
         ${socials.map((s) => `- ${s.socialName} : ${s.socialLink}`).join("\n")}
@@ -59,14 +311,13 @@ export default function GeminiResponse({
         ${allprojects
           .map((ap) => `- ${ap.projectname}: ${ap.projectdescription}`)
           .join("\n")}
-          (also enlarge project description atleast 30 words which explains the details that i have not mentioned in detail or left it out)
+          (also enlarge project description at least 30 words which explains the details that I have not mentioned in detail or left it out)
     
         Skills:
         ${allSkills
           .map((skill) => `- ${skill.skillname} (${skill.skilllevel})`)
           .join("\n")}
 
-    
         Soft Skills:
         ${softskills.map((skill) => `- ${skill.softskillname}`).join("\n")}
     
@@ -77,7 +328,7 @@ export default function GeminiResponse({
               `- ${q.degreename} in ${q.course} from ${q.institution} (${q.yearofcompletion})`
           )
           .join("\n")}
-          (identify and return the fullform of degree name example for btech return Bachelor in Technology and respectively)
+          (identify and return the full form of degree name example for BTech return Bachelor of Technology and respectively)
     
         Work Experience:
         ${allrole
@@ -87,7 +338,7 @@ export default function GeminiResponse({
           )
           .join("\n")}
 
-        also on the basis of the details , predict what role the im applying for and include it in response
+        also on the basis of the details, predict what role I'm applying for and include it in response
     
         Expected JSON output:
         {
@@ -95,14 +346,14 @@ export default function GeminiResponse({
           "email": "",
           "phone": "",
           "yourLocation": "",
-          "socials":[{"socialName":"","socialLink:""}]
+          "socials": [{"socialName": "", "socialLink": ""}],
           "workExperience": [{ "companyname": "", "duration": "", "jobtitle": "" }],
-          "educationalDetails": [{ "degreename": "","course": "", "institution": "", "yearofcompletion": "" }],
+          "educationalDetails": [{ "degreename": "", "course": "", "institution": "", "yearofcompletion": "" }],
           "allSkills": [{ "skillname": "", "skilllevel": "" }],
           "allProjects": [{ "projectname": "", "projectdescription": "" }],
           "softskills": [{ "softskillname": "" }],
           "description": "",
-          "role":""
+          "role": ""
         }`;
 
   useEffect(() => {
@@ -114,20 +365,28 @@ export default function GeminiResponse({
       setResponse(null);
 
       try {
-        const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+        const genAI = new GoogleGenerativeAI(
+          process.env.NEXT_PUBLIC_GEMINI_API_KEY ?? ""
+        );
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const result = await model.generateContent(prompt);
-        const rawText = result.response?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+        const rawText =
+          result.response?.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
 
-        const jsonResponse = JSON.parse(rawText.replace(/```json|```/g, "").trim());
+        const jsonResponse: ResumeResponse = JSON.parse(
+          rawText.replace(/```json|```/g, "").trim()
+        );
         setResponse(jsonResponse);
-        console.log(jsonResponse);
         setGeneratedResume(jsonResponse);
-        
       } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
         setError("Failed to fetch resume. Please try again.");
-        toast({ variant: "destructive", title: "Error generating resume.", description: String(err) });
+        toast({
+          variant: "destructive",
+          title: "Error generating resume.",
+          description: errorMessage,
+        });
       } finally {
         setLoading(false);
         setConfirmGeneration(false);
@@ -135,7 +394,12 @@ export default function GeminiResponse({
     }
 
     fetchData();
-  }, [confirmGeneration]);
+  }, [
+    confirmGeneration,
+    setConfirmGeneration,
+    setGeneratedResume,
+    prompt,
+  ]);
 
   return (
     <div className="w-full bg-slate-200 flex justify-center items-center min-h-[297mm] rounded-3xl">
@@ -148,4 +412,6 @@ export default function GeminiResponse({
       ) : null}
     </div>
   );
-}
+};
+
+export default GeminiResponse;

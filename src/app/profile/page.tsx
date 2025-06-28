@@ -6,8 +6,9 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { ResumeSchema } from "@/schemas/resumeSchema";
 
-export function SubtleDarkBluePreview({ oneTemplate }: { oneTemplate: any }) {
+export function SubtleDarkBluePreview({ oneTemplate }: { oneTemplate: Template }) {
   return (
     <div className="h-full w-full flex">
       {/* Left Blue Section with Vertical Text */}
@@ -32,7 +33,7 @@ export function SubtleDarkBluePreview({ oneTemplate }: { oneTemplate: any }) {
   );
 }
 
-export function OrangeAndBeigePreview({ oneTemplate }: { oneTemplate: any }) {
+export function OrangeAndBeigePreview({ oneTemplate }: { oneTemplate: Template }) {
   return (
     <div className="h-full w-full flex">
       <div className="w-[30%] flex bg-[#fcf8e1] flex-col">
@@ -45,7 +46,7 @@ export function OrangeAndBeigePreview({ oneTemplate }: { oneTemplate: any }) {
   );
 }
 
-export function BasicMonochromePreview({ oneTemplate }: { oneTemplate: any }) {
+export function BasicMonochromePreview({ oneTemplate }: { oneTemplate: Template }) {
   return (
     <div className="h-full w-full flex flex-col">
       <div className="h-[20%] bg-[#141414] flex items-center text-white justify-center">
@@ -58,11 +59,16 @@ export function BasicMonochromePreview({ oneTemplate }: { oneTemplate: any }) {
   );
 }
 
+export interface Template extends ResumeSchema{
+  _id:string,
+  templatename:string
+}
+
 export default function ProfilePage() {
   const [user, setUser] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [templates, setTemplates] = useState<string[]>([]); // ✅ Explicitly define type
+  const [templates, setTemplates] = useState<Template[]>([]); // ✅ Explicitly define type
   const router = useRouter();
   useEffect(() => {
     async function fetchProfile() {

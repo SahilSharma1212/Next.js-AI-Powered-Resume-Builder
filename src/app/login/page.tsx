@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { LoginSchema } from "../../schemas/loginSchema";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,22 +16,34 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-    const { toast } = useToast();
+  const { toast } = useToast();
 
-  const handleLogin = async (user) => {
-    const response = await axios.post("/api/users/login",user)
-    
-    console.log("Login success", response.data);
-    toast({
-      title: "Login succesful",
-      description: "You are now logged in",
-      className: "bg-black text-white border-gray-600",
-    });
-    router.push("/browse-templates");
-  }
+  const handleLogin = async (user: LoginSchema) => {
+    try {
+      const response = await axios.post("/api/users/login", user);
+
+      console.log("Login success", response.data);
+      toast({
+        title: "Login Successful",
+        description: "You are now logged in",
+        className: "bg-black text-white border-gray-600",
+      });
+
+      // Redirect the user after successful login
+      router.push("/browse-templates");
+    } catch (error) {
+      console.error("Login failed", error);
+
+      // Show an error toast when login fails
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password. Please try again.",
+        className: "bg-red-600 text-white border-gray-600",
+      });
+    }
+  };
 
   // Check if both email and password are filled
-
   const isFormValid = user.email.trim() !== "" && user.password.trim() !== "";
 
   return (
@@ -107,7 +120,6 @@ export default function LoginPage() {
             Sign up
           </Button>
         </div>
-
       </div>
     </div>
   );
