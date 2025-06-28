@@ -5,6 +5,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 connect();
 
+
+// Define response types for better type safety
+interface ErrorResponse {
+  message: string;
+  error: string;
+  stack?: string;
+}
+
+
 export async function POST(request: NextRequest) {
   try {
     // Parse request body
@@ -60,14 +69,18 @@ export async function POST(request: NextRequest) {
       { message: 'Resume created successfully', resume: newResume },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    // Type-safe error handling
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
+
     console.error("Error saving resume:", error);
     return NextResponse.json(
       { 
         message: "Error saving resume", 
-        error: error.message || "Unknown error",
-        stack: error.stack || "No stack trace"
-      }, 
+        error: errorMessage,
+        stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
+      } as ErrorResponse, 
       { status: 500 }
     );
   }

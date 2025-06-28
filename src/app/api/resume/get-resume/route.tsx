@@ -2,6 +2,13 @@ import { connect } from "@/dbConfig/dbConfig";
 import Resume from "@/models/resumeModel";
 import { NextRequest, NextResponse } from "next/server";
 
+// Define response types for better type safety
+interface ErrorResponse {
+  message: string;
+  error: string;
+  stack?: string;
+}
+
 connect();
 
 export async function POST(request: NextRequest) {
@@ -30,11 +37,18 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ data: receivedResume });
+  } catch (error: unknown) {
+    // Type-safe error handling
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorStack = error instanceof Error ? error.stack : undefined;
 
-  } catch (error: any) {
     console.error("Error viewing resume:", error);
     return NextResponse.json(
-      { message: "Error viewing resume", error: error.message || "Unknown error" },
+      {
+        message: "Error viewing resume",
+        error: errorMessage,
+        stack: process.env.NODE_ENV === "development" ? errorStack : undefined,
+      } as ErrorResponse,
       { status: 500 }
     );
   }
