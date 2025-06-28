@@ -1,4 +1,4 @@
-"use client"; // ✅ Client Component (needed for useEffect & useState)
+"use client";
 
 import { Button } from "@/components/ui/button";
 import axios from "axios";
@@ -6,7 +6,6 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { ResumeSchema } from "@/schemas/resumeSchema";
 
 export function SubtleDarkBluePreview({ oneTemplate }: { oneTemplate: Template }) {
   return (
@@ -59,10 +58,47 @@ export function BasicMonochromePreview({ oneTemplate }: { oneTemplate: Template 
   );
 }
 
-export interface Template extends ResumeSchema{
-  _id:string,
-  templatename:string
+export interface Template {
+  _id: string;
+  userId: string;
+  name: {
+    first: string;
+    last: string;
+  };
+  email: string;
+  phone: string;
+  yourLocation: string;
+  socials: {
+    socialName: string;
+    socialLink: string;
+  }[];
+  workExperience: {
+    companyname: string;
+    duration: string;
+    jobtitle: string;
+  }[];
+  educationalDetails: {
+    degreename: string;
+    course: string;
+    institution: string;
+    yearofcompletion: string;
+  }[];
+  allSkills: {
+    skillname: string;
+    skilllevel: string;
+  }[];
+  allProjects: {
+    projectname: string;
+    projectdescription: string;
+  }[];
+  softskills: {
+    softskillname: string;
+  }[];
+  description: string;
+  role: string;
+  templatename: string;
 }
+
 
 export default function ProfilePage() {
   const [user, setUser] = useState<string | null>(null);

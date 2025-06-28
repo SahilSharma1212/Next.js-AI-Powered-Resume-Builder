@@ -63,7 +63,7 @@ export default function VerifyEmailPage() {
     if (token.length > 0) {
       verifyUserEmail();
     }
-  }, [token]);
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-screen py-2 overflow-hidden">
