@@ -15,7 +15,7 @@ export function SparklesPreview() {
   useEffect(() => {
     const timeouts = [
       setTimeout(() => setLogoVisible(true), 1000),
-      setTimeout(() => setBrandnameVisible(true), 1500),
+      setTimeout(() => setBrandnameVisible(!brandnameVisible), 1500),
       setTimeout(() => setButtonsVisible(true), 2500),
     ];
 
