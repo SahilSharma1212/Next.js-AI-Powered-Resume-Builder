@@ -2,8 +2,8 @@
 
 import React, { FC, useState } from "react";
 import { Spotlight } from "@/components/ui/spotlight-new";
-import FormComponent from "./@form-component/page";
-import PreviewScreen from "./@preview-screen/page";
+import FormComponent from "./@formcomponent/page";
+import PreviewScreen from "./@previewscreen/page";
 
 
 interface Social {

@@ -45,7 +45,10 @@ interface Role {
 }
 
 interface ResumeResponse {
-  name: string;
+  name: {
+    first: string;
+    last: string;
+  };
   email: string;
   phone: string;
   yourLocation: string;
@@ -58,6 +61,8 @@ interface ResumeResponse {
   description: string;
   role: string;
 }
+
+
 
 // Define props interface
 interface PdfPreviewProps {

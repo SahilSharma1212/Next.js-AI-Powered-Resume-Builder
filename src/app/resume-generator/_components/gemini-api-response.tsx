@@ -42,7 +42,10 @@ interface Role {
 }
 
 interface ResumeResponse {
-  "name": { "first": "", "last": "" }
+  name: {
+    first: string;
+    last: string;
+  };
   email: string;
   phone: string;
   yourLocation: string;
@@ -55,6 +58,7 @@ interface ResumeResponse {
   description: string;
   role: string;
 }
+
 
 // Define props interface
 interface GeminiResponseProps {

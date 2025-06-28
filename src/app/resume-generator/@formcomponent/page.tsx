@@ -2,13 +2,13 @@
 "use client";
 
 import React, { FC, useEffect } from "react";
-import PersonalDetailsPage from "./@personal-details/page";
-import WorkExperiencePage from "./@work-experience/page";
-import EducationalDetailsPage from "./@educational-details/page";
-import SkillSectionPage from "./@add-skills/page";
-import ProjectSectionPage from "./@project-section/page";
-import TellUsMorePage from "./@tell-us-more/page";
-import SoftSkillsSections from "./@soft-skills/page";
+import PersonalDetailsPage from "./@personaldetails/page";
+import WorkExperiencePage from "./@workexperience/page";
+import EducationalDetailsPage from "./@educationaldetails/page";
+import SkillSectionPage from "./@addskills/page";
+import ProjectSectionPage from "./@projectsection/page";
+import TellUsMorePage from "./@tellusmore/page";
+import SoftSkillsSections from "./@softskills/page";
 
 // Define interfaces for data structures
 
